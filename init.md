@@ -80,3 +80,39 @@ We want to leverage the monorepo .git folder here.
 ## Add Prisma
 
 <https://docs.nestjs.com/recipes/prisma#set-up-prisma>
+
+Add dotenv `npm i -D dotenv-cli`
+Add package.json scripts to the api.
+
+```json
+{
+  "scripts": {
+    "db:migrate": "npm run withEnv:dev prisma migrate dev",
+    "db:migrate:test": "npm run withEnv:test prisma migrate dev",
+    "db:migrate:prod": "npm run withEnv prisma migrate deploy",
+    "db:migrate:create": "npm run db:migrate --create-only",
+    "db:deploy": "prisma migrate deploy",
+    "db:prepare:ci": "npm run withEnv:test prisma migrate deploy && npm run withEnv:test prisma db seed",
+    "db:reset": "npm run withEnv:dev prisma migrate reset",
+    "db:reset:test": "npm run withEnv:test prisma migrate reset --skip-seed",
+    "db:force-full-reset:test": "npm run withEnv:test prisma migrate reset --force",
+    "db:seed": "npm run withEnv:dev prisma db seed",
+    "db:seed:test": "npm run withEnv:test prisma db seed",
+    "db:seed:prod": "npm run withEnv prisma db seed",
+
+    "withEnv": "dotenv -c --",
+    "withEnv:dev": "dotenv -c development --",
+    "withEnv:test": "dotenv -c test --"
+  }
+}
+```
+
+Create a .env.development, .env.development.local, .env.test, .env.test.local to match the dotenv package scripts.
+Add a DATABASE_URL to each.
+Rename `.env` to `.env.sample`
+(Nest will try to leverage .env if found)
+
+- Add a dummy model
+- Test the db:migrate script
+
+## Shared Types
