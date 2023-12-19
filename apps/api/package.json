@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "dev": "nest start --watch",
+    "dev": "npm run withEnv:dev nest start --watch",
     "db:migrate": "npm run withEnv:dev prisma migrate dev",
     "db:migrate:test": "npm run withEnv:test prisma migrate dev",
     "db:migrate:prod": "npm run withEnv prisma migrate deploy",
@@ -39,6 +39,7 @@
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/swagger": "^7.1.17",
     "@prisma/client": "^5.7.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"
