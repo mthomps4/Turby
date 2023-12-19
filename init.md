@@ -39,3 +39,44 @@ To connect to your Remote Cache, run the following in any turborepo:
   npx turbo link
 
 ```
+
+## Add Tailwind
+
+<https://github.com/vercel/turbo/tree/main/examples/with-tailwind/apps>
+
+Looking at this example:
+
+- We've added a tailwind-config to the packages.
+- Within EACH FE app we've added `autoprefixer postcss tailwindcss`.
+- Each FE App has its `tailwind.config.ts` file that inherits from the package.
+  - This helps IDE Support if opening a single app > the whole mono repo
+- At the root we've created a tailwind.config.ts file that extends from the package
+  - Only necessary to leverage IDE support when viewing the whole monorepo
+
+## Add an API
+
+- `cd apps`
+- `npx nest new api`
+
+Inside of packages ts-config.
+Add a `api.json` and copy the contents out of the generated nest app to here.
+Back in apps/api/tsconfg -- update to extend from packages.
+(Not mandatory -- but keeps the convention)
+
+In the API package.json file.
+Ensure there is a `dev` script to match the turbo `npm run dev`.
+This will allow all apps to start together from root.
+
+Similar ensure there is a lint, typecheck, etc. to match.
+
+... One final bug.
+
+In `src/main.ts` update the port to `4000` > `3000`
+3000 is already being used by our web app -- convention APIs and Services are now 4000+.
+
+Finally, delete the `.git` folder created by Nest.
+We want to leverage the monorepo .git folder here.
+
+## Add Prisma
+
+<https://docs.nestjs.com/recipes/prisma#set-up-prisma>
