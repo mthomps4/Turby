@@ -97,8 +97,6 @@ Add package.json scripts to the api.
     "db:reset:test": "npm run withEnv:test prisma migrate reset --skip-seed",
     "db:force-full-reset:test": "npm run withEnv:test prisma migrate reset --force",
     "db:seed": "npm run withEnv:dev prisma db seed",
-    "db:seed:test": "npm run withEnv:test prisma db seed",
-    "db:seed:prod": "npm run withEnv prisma db seed",
 
     "withEnv": "dotenv -c --",
     "withEnv:dev": "dotenv -c development --",
