@@ -114,3 +114,10 @@ Rename `.env` to `.env.sample`
 - Test the db:migrate script
 
 ## Shared Types
+
+There is a Shared Types folder with ZOD and plain Types, mostly inferred from ZOD.
+The Prisma Types should not live here...
+
+### API Prisma Types and Serializers
+
+The Nest API layer should leverage Serializers to transform the Prisma Types into Client Types (Shared Types).
