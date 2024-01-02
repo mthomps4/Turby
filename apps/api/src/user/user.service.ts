@@ -1,76 +1,48 @@
-import { UserSerializer } from '@/serializer/user.serializer';
+import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { SerializedUser } from '@repo/types/src/user';
-import { PrismaService } from '../prisma/prisma.service';
+import { UserFilters } from '@repo/types/src/user';
 
 @Injectable()
 export class UserService {
-  constructor(
-    private prisma: PrismaService,
-    private userSerializer: UserSerializer,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
-  async find(
-    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
-  ): Promise<SerializedUser | null> {
-    const prismaUser = await this.prisma.user.findUnique({
-      where: userWhereUniqueInput,
+  // Note: Do not use 'select' with serializers.
+  async find(params: Omit<Prisma.UserFindUniqueArgs, 'select'>) {
+    return this.prisma.user.findUnique({
+      ...params,
     });
-
-    if (!prismaUser) return null;
-
-    return this.userSerializer.serialize(prismaUser);
   }
 
-  async findAll(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.UserWhereUniqueInput;
-    where?: Prisma.UserWhereInput;
-    orderBy?: Prisma.UserOrderByWithRelationInput;
-  }): Promise<SerializedUser[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    const prismaUsers = await this.prisma.user.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
+  async findAll(filters: UserFilters | undefined) {
+    return this.prisma.user.findMany({
+      skip: filters?.paginationFilters?.skip,
+      take: filters?.paginationFilters?.take,
+      where: {
+        firstName: filters?.firstName,
+        lastName: filters?.lastName,
+        email: filters?.email,
+      },
     });
-
-    // TODO: Actual Error Handling...
-    if (!prismaUsers) return [];
-
-    return prismaUsers.map((prismaUser) =>
-      this.userSerializer.serialize(prismaUser),
-    );
   }
 
-  async createUser(data: Prisma.UserCreateInput): Promise<SerializedUser> {
-    const prismaUser = await this.prisma.user.create({
-      data,
+  async createUser(params: Omit<Prisma.UserCreateArgs, 'select'>) {
+    return this.prisma.user.create({
+      ...params,
     });
-
-    return this.userSerializer.serialize(prismaUser);
   }
 
-  async updateUser(params: {
-    where: Prisma.UserWhereUniqueInput;
-    data: Prisma.UserUpdateInput;
-  }): Promise<SerializedUser> {
-    const { where, data } = params;
-    const prismaUser = await this.prisma.user.update({
-      data,
-      where,
+  async updateUser(params: Omit<Prisma.UserUpdateArgs, 'select'>) {
+    return this.prisma.user.update({
+      ...params,
     });
-
-    return this.userSerializer.serialize(prismaUser);
   }
 
-  async deleteUser(where: Prisma.UserWhereUniqueInput): Promise<boolean> {
+  async deleteUser(
+    params: Omit<Prisma.UserFindUniqueArgs, 'select'>,
+  ): Promise<boolean> {
     await this.prisma.user.delete({
-      where,
+      ...params,
     });
     return true;
   }

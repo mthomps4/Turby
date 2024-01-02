@@ -121,3 +121,16 @@ The Prisma Types should not live here...
 ### API Prisma Types and Serializers
 
 The Nest API layer should leverage Serializers to transform the Prisma Types into Client Types (Shared Types).
+
+## TODO
+
+Testing:
+
+- Playwright E2E
+- Example of 3rd party services and test mode (API)
+- Fuller CRUD Relational DB Example (User with Posts)
+- With Auth Examples (API @AuthUser)
+
+Packages:
+
+- Organization / Better Exporting of UI components

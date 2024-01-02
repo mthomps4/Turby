@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PaginationFilters } from "./pagination";
 
 export const createUserSchema = z.object({
   firstName: z.string(),
@@ -12,4 +13,11 @@ export type SerializedUser = {
   firstName: string;
   lastName: string;
   email: string;
+};
+
+export type UserFilters = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  paginationFilters?: PaginationFilters;
 };

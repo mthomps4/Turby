@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { UserSerializer } from './user.serializer';
 
 @Module({
